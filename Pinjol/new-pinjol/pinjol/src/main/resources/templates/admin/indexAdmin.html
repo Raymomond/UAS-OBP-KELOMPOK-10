@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Dashboard Admin</h1>
+    </header>
+    <div class="container">
+        <h2>Data Form Pinjaman</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama</th>
+                    <th>No Telepon</th>
+                    <th>Alamat</th>
+                    <th>Email</th>
+                    <th>Jumlah Pinjaman</th>
+                    <th>Lama Pinjaman</th>
+                    <th>Nama Bank</th>
+                    <th>Nomor Rekening</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="loan : ${loans}">
+                    <td th:text="${loan.nama}"></td>
+                    <td th:text="${loan.noTelpon}"></td>
+                    <td th:text="${loan.alamat}"></td>
+                    <td th:text="${loan.email}"></td>
+                    <td th:text="${loan.jumlahPinjaman}"></td>
+                    <td th:text="${loan.lamaPinjaman}"></td>
+                    <td th:text="${loan.namaBank}"></td>
+                    <td th:text="${loan.nomorRekening}"></td>
+                    <td th:text="${loan.status}"></td>
+                    <td>
+                        <!-- Tampilkan tombol hanya jika statusnya PENDING -->
+                        <form th:action="@{/admin/loan/{id}/approve(id=${loan.id})}" method="post" th:if="${loan.status == 'pending'}">
+                            <button type="submit" title="Approve">✔</button>
+                        </form>
+                        <form th:action="@{/admin/loan/{id}/reject(id=${loan.id})}" method="post" th:if="${loan.status == 'pending'}">
+                            <button type="submit" title="Reject">✘</button>
+                        </form>
+                    </td>
+                </tr>
+                <!-- Tambahkan data baru di sini -->
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
